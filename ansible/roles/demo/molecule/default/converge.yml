@@ -6,9 +6,8 @@
   tasks:
     - name: Create kind cluster
       command: kind create cluster --name molecule
-      register: kind_create
       failed_when: false
       changed_when: false
 
     - name: Deploy manifests
-      command: kubectl apply -f ../../../k8s
+      command: kubectl apply -f {{ role_path }}/../../../k8s
