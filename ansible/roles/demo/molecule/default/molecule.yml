@@ -1,5 +1,5 @@
 driver:
-  name: delegated
+  name: default
 
 platforms: []
 
@@ -10,4 +10,7 @@ scenario:
     - verify
 
 provisioner:
+  name: ansible
+
+verifier:
   name: ansible
