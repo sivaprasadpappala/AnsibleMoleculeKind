@@ -31,11 +31,10 @@ pipeline {
           . .venv/bin/activate
 
           pip install --upgrade pip
-
           pip install \
             ansible-core==2.15.13 \
             ansible==8.7.0 \
-            molecule==25.12.0 \
+            molecule==6.0.2 \
             molecule-docker==2.1.0 \
             docker
 
