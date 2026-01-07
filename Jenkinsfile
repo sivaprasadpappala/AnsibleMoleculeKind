@@ -43,14 +43,24 @@ pipeline {
       }
     }
 
-    stage('Commit Changes') {
+    stage('Commit & Push') {
       steps {
-        sh """
-          git status
-          git add .
-          git commit -m "Validated with Molecule (kind)" || true
-          git push origin ${FEATURE_BRANCH}
-        """
+        withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
+          sh '''
+            git config user.name "jenkins-ci"
+            git config user.email "jenkins@ci.local"
+
+            git status
+
+            # Never commit virtualenv
+            git reset .venv || true
+
+            git add .
+            git commit -m "Validated with Molecule (kind)" || true
+
+            git push https://${GH_TOKEN}@github.com/<ORG>/<REPO>.git ci-18
+          '''
+        }
       }
     }
 
