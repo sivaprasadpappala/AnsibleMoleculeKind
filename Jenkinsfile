@@ -27,12 +27,6 @@ pipeline {
     stage('Molecule Test with kind') {
       steps {
         sh '''
-          unset DOCKER_HOST
-          unset DOCKER_TLS_VERIFY
-          unset DOCKER_CERT_PATH
-
-          export DOCKER_HOST=unix:///var/run/docker.sock
-
           python3 -m venv .venv
           . .venv/bin/activate
 
@@ -41,17 +35,20 @@ pipeline {
             ansible-core==2.15.13 \
             ansible==8.7.0 \
             molecule==6.0.2 \
-            molecule-docker==2.1.0 \
             docker
-
-          docker version
-          docker ps
 
           cd ansible/roles/demo
           molecule test
         '''
       }
     }
+
+    post {
+      always {
+        sh 'kind delete cluster --name molecule || true'
+      }
+    }
+
 
     stage('Commit Changes') {
       steps {

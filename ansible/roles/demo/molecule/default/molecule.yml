@@ -1,20 +1,13 @@
 driver:
-  name: docker
-  options:
-    docker_host: unix:///var/run/docker.sock
+  name: delegated
 
-platforms:
-  - name: kind
-    image: kindest/node:v1.35.0
-    privileged: true
-    command: /sbin/init
+platforms: []
+
+scenario:
+  test_sequence:
+    - dependency
+    - converge
+    - verify
 
 provisioner:
-  name: ansible
-  env:
-    DOCKER_HOST: unix:///var/run/docker.sock
-    DOCKER_TLS_VERIFY: ""
-    DOCKER_CERT_PATH: ""
-
-verifier:
   name: ansible

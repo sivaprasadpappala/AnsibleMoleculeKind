@@ -1,4 +1,4 @@
-- name: Deploy app to kind
+- name: Deploy to kind
   hosts: localhost
   connection: local
   gather_facts: false
@@ -6,10 +6,9 @@
   tasks:
     - name: Create kind cluster
       command: kind create cluster --name molecule
-      ignore_errors: true
+      register: kind_create
+      failed_when: false
+      changed_when: false
 
-    - name: Set kubeconfig
-      shell: kind get kubeconfig --name molecule > ~/.kube/config
-
-    - name: Deploy Kubernetes manifests
+    - name: Deploy manifests
       command: kubectl apply -f ../../../k8s
