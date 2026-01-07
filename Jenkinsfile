@@ -57,7 +57,7 @@ pipeline {
             git add .
             git commit -m "Validated with Molecule (kind)" || true
 
-            git push https://${GH_TOKEN}@github.com/<ORG>/<REPO>.git ${BRANCH}
+            git push https://${GH_TOKEN}@github.com/sivaprasadpappala/AnsibleMoleculeKind.git ${BRANCH}
           '''
         }
       }
