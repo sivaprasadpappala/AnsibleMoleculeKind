@@ -26,10 +26,16 @@ pipeline {
 
     stage('Molecule Test with kind') {
       steps {
-        sh """
+        sh '''
+          python3 -m venv .venv
+          . .venv/bin/activate
+
+          pip install --upgrade pip
+          pip install ansible ansible-dev-tools
+
           cd ansible/roles/demo
           molecule test
-        """
+        '''
       }
     }
 
