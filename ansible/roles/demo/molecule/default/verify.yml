@@ -1,0 +1,11 @@
+- name: Verify deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Check pods
+      command: kubectl get pods
+
+    - name: Wait for deployment
+      command: kubectl rollout status deploy/demo --timeout=120s

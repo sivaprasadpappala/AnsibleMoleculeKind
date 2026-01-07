@@ -1,0 +1,64 @@
+pipeline {
+  agent any
+
+  environment {
+    REPO_URL   = "https://github.com/sivaprasadpappala/AnsibleMoleculeKind.git"
+    BASE_BRANCH = "main"
+    FEATURE_BRANCH = "ci-${BUILD_NUMBER}"
+    GH_TOKEN = credentials('github-token')
+  }
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        git branch: "${BASE_BRANCH}", url: "${REPO_URL}"
+      }
+    }
+
+    stage('Create Feature Branch') {
+      steps {
+        sh """
+          git checkout -b ${FEATURE_BRANCH}
+        """
+      }
+    }
+
+    stage('Molecule Test with kind') {
+      steps {
+        sh """
+          cd ansible/roles/demo
+          molecule test
+        """
+      }
+    }
+
+    stage('Commit Changes') {
+      steps {
+        sh """
+          git status
+          git add .
+          git commit -m "Validated with Molecule (kind)" || true
+          git push origin ${FEATURE_BRANCH}
+        """
+      }
+    }
+
+    stage('Create Pull Request') {
+      steps {
+        sh """
+          curl -s -X POST \
+            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/ORG/REPO/pulls \
+            -d '{
+              "title": "Auto PR from Jenkins CI",
+              "head": "${FEATURE_BRANCH}",
+              "base": "${BASE_BRANCH}",
+              "body": "PR created automatically after Molecule validation using kind"
+            }'
+        """
+      }
+    }
+  }
+}

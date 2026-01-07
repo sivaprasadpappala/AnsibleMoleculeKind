@@ -1,0 +1,16 @@
+driver:
+  name: docker
+
+platforms:
+  - name: kind
+    image: kindest/node:v1.35.0
+    privileged: true
+
+provisioner:
+  name: ansible
+  playbooks:
+    converge: converge.yml
+    verify: verify.yml
+
+verifier:
+  name: ansible
