@@ -43,13 +43,6 @@ pipeline {
       }
     }
 
-    post {
-      always {
-        sh 'kind delete cluster --name molecule || true'
-      }
-    }
-
-
     stage('Commit Changes') {
       steps {
         sh """
@@ -76,6 +69,11 @@ pipeline {
             }'
         """
       }
+    }
+  }
+  post {
+    always {
+      sh 'kind delete cluster --name molecule || true'
     }
   }
 }
