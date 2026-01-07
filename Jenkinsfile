@@ -65,18 +65,20 @@ pipeline {
 
     stage('Create Pull Request') {
       steps {
-        sh """
-          curl -s -X POST \
-            -H "Authorization: token ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/ORG/REPO/pulls \
-            -d '{
-              "title": "Auto PR from Jenkins CI",
-              "head": "${FEATURE_BRANCH}",
-              "base": "${BASE_BRANCH}",
-              "body": "PR created automatically after Molecule validation using kind"
-            }'
-        """
+        withCredentials([string(credentialsId: 'github-token', variable: 'GH_TOKEN')]) {
+          sh '''
+            curl -s -X POST \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/sivaprasadp/AnsibleMoleculeKind/pulls \
+              -d '{
+                "title": "Auto PR from Jenkins CI",
+                "head": "'"${BRANCH}"'",
+                "base": "main",
+                "body": "PR created automatically after Molecule validation using kind"
+              }'
+          '''
+        }
       }
     }
   }
