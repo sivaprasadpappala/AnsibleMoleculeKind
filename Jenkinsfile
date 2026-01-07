@@ -71,9 +71,4 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      sh 'kind delete cluster --name molecule || true'
-    }
-  }
 }
