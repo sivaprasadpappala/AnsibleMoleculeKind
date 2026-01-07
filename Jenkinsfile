@@ -27,6 +27,12 @@ pipeline {
     stage('Molecule Test with kind') {
       steps {
         sh '''
+          unset DOCKER_HOST
+          unset DOCKER_TLS_VERIFY
+          unset DOCKER_CERT_PATH
+
+          export DOCKER_HOST=unix:///var/run/docker.sock
+
           python3 -m venv .venv
           . .venv/bin/activate
 
@@ -37,6 +43,9 @@ pipeline {
             molecule==6.0.2 \
             molecule-docker==2.1.0 \
             docker
+
+          docker version
+          docker ps
 
           cd ansible/roles/demo
           molecule test
