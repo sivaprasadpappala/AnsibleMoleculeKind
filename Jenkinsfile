@@ -31,7 +31,7 @@ pipeline {
           . .venv/bin/activate
 
           pip install --upgrade pip
-          pip install ansible ansible-dev-tools
+          pip install ansible ansible-dev-tools molecule-docker docker
 
           cd ansible/roles/demo
           molecule test
