@@ -1,7 +1,11 @@
 driver:
   name: default
 
-platforms: []
+platforms:
+  - name: localhost
+    groups:
+      - local
+    children: []
 
 scenario:
   test_sequence:
@@ -11,6 +15,12 @@ scenario:
 
 provisioner:
   name: ansible
+  inventory:
+    hosts:
+      all:
+        hosts:
+          localhost:
+            ansible_connection: local
 
 verifier:
   name: ansible
