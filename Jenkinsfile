@@ -72,11 +72,11 @@ pipeline {
             curl -s -X POST \
               -H "Authorization: token $GH_TOKEN" \
               -H "Accept: application/vnd.github+json" \
-              https://api.github.com/repos/sivaprasadp/AnsibleMoleculeKind/pulls \
+              https://api.github.com/repos/sivaprasadpappala/AnsibleMoleculeKind/pulls \
               -d '{
                 "title": "Auto PR from Jenkins CI",
-                "head": "'"${FEATURE_BRANCH}"'",
-                "base": "'"${BASE_BRANCH}"'",
+                "head": "sivaprasadpappala:'"${FEATURE_BRANCH}"'",
+                "base": "main",
                 "body": "PR created automatically after Molecule validation using kind"
               }'
           '''
